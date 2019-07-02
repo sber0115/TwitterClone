@@ -7,8 +7,32 @@
 //
 
 #import "TweetCell.h"
+#import "UIImageView+AFNetworking.h"
 
 @implementation TweetCell
+
+
+- (void) setTweet:(Tweet*)tweet
+{
+    
+    self.tweet = tweet;
+    
+    NSURL *userPicURL = [NSURL URLWithString:self.tweet.user.profileImageURL];
+    
+    self.userPic.image = nil;
+    
+    [self.userPic setImageWithURL:userPicURL];
+    
+    self.userName.text = self.tweet.user.name;
+    self.userHandle.text = self.tweet.user.screenName;
+    self.tweetDate.text = self.tweet.createdAtString;
+    self.tweetContent.text = self.tweet.text;
+    
+    
+
+}
+
+
 
 - (void)awakeFromNib {
     [super awakeFromNib];
