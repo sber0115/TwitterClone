@@ -10,6 +10,7 @@
 #import "APIManager.h"
 #import "TweetCell.h"
 #import "Tweet.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -33,11 +34,6 @@
         if (tweets) {
             NSLog(@"😎😎😎 Successfully loaded home timeline");
             
-            for (NSDictionary *dictionary in tweets) {
-                NSString *text = dictionary[@"text"];
-                NSLog(@"%@", text);
-            
-            }
             
             self.tweetArray = [[NSMutableArray alloc] initWithArray:tweets];
             [self.tableView reloadData];
@@ -70,10 +66,20 @@
     
     Tweet* tweet = self.tweetArray[indexPath.row];
     
-    [cell setTweet:tweet];
-//    cell.tweet = tweet;
-    //apparently the setTweeet method gets implicitly called here; it was defined in TweetCell
+    NSString *pic = tweet.user.profileImageURL;
     
+    
+    NSURL *userPicNSURL = [NSURL URLWithString:pic];
+    
+    
+    cell.userPic.image = nil;
+    [cell.userPic setImageWithURL:userPicNSURL];
+    
+    
+    cell.tweetContent.text = tweet.text;
+    cell.userHandle.text = tweet.user.screenName;
+    cell.tweetDate.text = tweet.createdAtString;
+    cell.userName.text = tweet.user.name;
     
     
     return cell;
