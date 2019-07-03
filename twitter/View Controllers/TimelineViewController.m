@@ -16,6 +16,9 @@
 
 @property (strong,nonatomic) NSMutableArray *tweetArray;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
+
 
 @end
 
@@ -25,24 +28,23 @@
     [super viewDidLoad];
     
     
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
     
-    // Get timeline
-    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
-        if (tweets) {
-            NSLog(@"😎😎😎 Successfully loaded home timeline");
-            
-            
-            self.tweetArray = [[NSMutableArray alloc] initWithArray:tweets];
-            [self.tableView reloadData];
-            
-        } else {
-            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
-        }
-    }];
+    [self fetchTweets];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    
+    
+    [self.refreshControl addTarget:self action:@selector(fetchTweets) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
+    
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -58,6 +60,34 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+
+- (void) fetchTweets
+{
+    // Get timeline
+    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
+        if (tweets) {
+            NSLog(@"😎😎😎 Successfully loaded home timeline");
+            
+            
+            self.tweetArray = [[NSMutableArray alloc] initWithArray:tweets];
+            [self.tableView reloadData];
+            
+        } else {
+            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
+        }
+    }];
+    
+    
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
+    
+}
+
+
+
+
 
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -80,6 +110,9 @@
     cell.userHandle.text = tweet.user.screenName;
     cell.tweetDate.text = tweet.createdAtString;
     cell.userName.text = tweet.user.name;
+    cell.numLikes.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
+    cell.numRetweets.text = [NSString stringWithFormat:@"%d",tweet.retweetCount];
+    cell.numReplies.text = [NSString stringWithFormat:@"%d",tweet.retweetCount];
     
     
     return cell;

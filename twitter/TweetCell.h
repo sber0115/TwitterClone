@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *tweetDate;
 @property (strong, nonatomic) IBOutlet UILabel *tweetContent;
 @property (weak, nonatomic) Tweet *tweet;
+@property (weak, nonatomic) IBOutlet UILabel *numReplies;
+@property (weak, nonatomic) IBOutlet UILabel *numRetweets;
+@property (weak, nonatomic) IBOutlet UILabel *numLikes;
 
 
 
