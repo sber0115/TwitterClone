@@ -40,7 +40,7 @@
         self.tweet.retweetCount -= 1;
         [self.retweetButton setSelected:NO];
         
-        [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
+        [[APIManager shared] unretweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error unretweeting tweet: %@", error.localizedDescription);
             }

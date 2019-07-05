@@ -152,7 +152,11 @@
     
     cell.tweet = tweet;
     cell.tweetContent.text = tweet.text;
-    cell.userHandle.text = tweet.user.screenName;
+    
+    
+    cell.userHandle.text = @"@";
+    cell.userHandle.text = [cell.userHandle.text stringByAppendingString:tweet.user.screenName];
+    
     cell.tweetDate.text = tweet.createdAtString;
     cell.userName.text = tweet.user.name;
     cell.numLikes.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
