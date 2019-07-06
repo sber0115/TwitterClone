@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) int reply_count;
 @property (strong, nonatomic) NSString *createdAtString; // Display date
+@property (strong, nonatomic) NSString *timeAgoString; //Display how long it's been since tweet creation
 @property (strong,nonatomic) NSDictionary *tweet;
 + (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries;
 

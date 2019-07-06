@@ -14,6 +14,7 @@
 #import "ComposeViewController.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "DetailedView.h"
 
 
 
@@ -84,10 +85,35 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navigationController = [segue destinationViewController];
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
+    
+    
+    
+    if ([segue.identifier isEqualToString:@"Details"]) {
+        UITableViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+        Tweet *tweet = self.tweetArray[indexPath.row];
+        
+        DetailedView *detailedView = [segue destinationViewController];
+        
+        detailedView.tweet = tweet;
+        
+    }
+    
+    
+    else if ([segue.identifier isEqualToString:@"MakeTweet"]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+        
+        
+    }
+    
+    
+    
+    
+    
 }
+
 
 
 
@@ -139,6 +165,8 @@
     
     TweetCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TweetCell" forIndexPath:indexPath];
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     Tweet* tweet = self.tweetArray[indexPath.row];
     
     NSString *pic = tweet.user.profileImageURL;
@@ -157,7 +185,7 @@
     cell.userHandle.text = @"@";
     cell.userHandle.text = [cell.userHandle.text stringByAppendingString:tweet.user.screenName];
     
-    cell.tweetDate.text = tweet.createdAtString;
+    cell.tweetDate.text = tweet.timeAgoString;
     cell.userName.text = tweet.user.name;
     cell.numLikes.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
     cell.numRetweets.text = [NSString stringWithFormat:@"%d",tweet.retweetCount];
