@@ -17,41 +17,49 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configureDetailedView];
+}
 
+
+- (void)configureDetailedView
+{
+    
+    if (self.tweet.retweeted)
+    {
+        [self.retweetButton setSelected:YES];
+    }
+    else
+    {
+        [self.retweetButton setSelected:NO];
+    }
+    
+    if (self.tweet.favorited)
+    {
+        [self.likeButton setSelected:YES];
+    }
+    else
+    {
+        [self.likeButton setSelected:NO];
+    }
+    
     NSString *pic = self.tweet.user.profileImageURL;
-    
-    
+
     NSURL *userPicNSURL = [NSURL URLWithString:pic];
     
+    self.userPicImageView.image = nil;
+    [self.userPicImageView setImageWithURL:userPicNSURL];
     
-    self.userPic.image = nil;
-    [self.userPic setImageWithURL:userPicNSURL];
+    self.tweetContentLabel.text = self.tweet.text;
     
-    self.tweetContent.text = self.tweet.text;
+    self.userHandleLabel.text = [NSString stringWithFormat:@"@%@",self.tweet.user.screenName];
     
-    
-    self.userHandle.text = @"@";
-    self.userHandle.text = [self.userHandle.text stringByAppendingString:self.tweet.user.screenName];
-    
-    self.tweetDate.text = self.tweet.timeAgoString;
-    self.userName.text = self.tweet.user.name;
-    self.numLikes.text = [NSString stringWithFormat:@"%d", self.tweet.favoriteCount];
-    self.numRetweets.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
-    self.numReplies.text = [NSString stringWithFormat:@"%d",self.tweet.reply_count];
-    
-    
-    
-    
+    self.tweetDateLabel.text = self.tweet.timeAgoString;
+    self.userNameLabel.text = self.tweet.user.name;
+    self.numLikesLabel.text = [NSString stringWithFormat:@"%d", self.tweet.favoriteCount];
+    self.numRetweetsLabel.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
+    self.numRepliesLabel.text = [NSString stringWithFormat:@"%d",self.tweet.reply_count];
+                                
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

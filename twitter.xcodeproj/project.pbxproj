@@ -104,14 +104,8 @@
 				6AD278D820BC4B950085BC29 /* AppDelegate.h */,
 				6AD278D920BC4B950085BC29 /* AppDelegate.m */,
 				6AD278DE20BC4B950085BC29 /* Main.storyboard */,
-				78AE5D6522CADB6500C822E2 /* TweetCell.h */,
-				78AE5D6622CADB6500C822E2 /* TweetCell.m */,
 				6AD278E120BC4B970085BC29 /* Assets.xcassets */,
 				6AD278E320BC4B970085BC29 /* LaunchScreen.storyboard */,
-				78AE5D5F22CAC88A00C822E2 /* User.h */,
-				78AE5D6022CAC88A00C822E2 /* User.m */,
-				78AE5D6222CAC97F00C822E2 /* Tweet.h */,
-				78AE5D6322CAC97F00C822E2 /* Tweet.m */,
 				6AD278E620BC4B970085BC29 /* Info.plist */,
 				6AD278E720BC4B970085BC29 /* main.m */,
 			);
@@ -132,6 +126,10 @@
 		6AD278F820BCBC140085BC29 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				78AE5D6322CAC97F00C822E2 /* Tweet.m */,
+				78AE5D6222CAC97F00C822E2 /* Tweet.h */,
+				78AE5D6022CAC88A00C822E2 /* User.m */,
+				78AE5D5F22CAC88A00C822E2 /* User.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -139,6 +137,8 @@
 		6AD278FF20BCBF280085BC29 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				78AE5D6522CADB6500C822E2 /* TweetCell.h */,
+				78AE5D6622CADB6500C822E2 /* TweetCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -150,8 +150,8 @@
 				6AD2790520BCC0380085BC29 /* LoginViewController.m */,
 				6AD2790720BCC04D0085BC29 /* TimelineViewController.h */,
 				6AD2790820BCC04D0085BC29 /* TimelineViewController.m */,
-				7875521322CD02DA006DF044 /* ComposeViewController.m */,
 				7875521222CD02DA006DF044 /* ComposeViewController.h */,
+				7875521322CD02DA006DF044 /* ComposeViewController.m */,
 				7839C74422D01565006B8A67 /* DetailedView.h */,
 				7839C74522D01565006B8A67 /* DetailedView.m */,
 			);

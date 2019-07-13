@@ -9,9 +9,6 @@
 #import "APIManager.h"
 #import "Tweet.h"
 
-
-
-
 //Step 4: this is where API requests get made
 
 static NSString * const baseURLString = @"https://api.twitter.com";
@@ -92,6 +89,7 @@ static NSString * const consumerSecret = @"s5ynGqXzstUZwFPxVyMDkYh197qvHOcVM3kwv
     }];
 }
 
+
 - (void)unretweet:(Tweet *)tweet completion:(void (^)(Tweet *, NSError *))completion{
     
     NSString *urlString = @"1.1/statuses/unretweet.json";
@@ -110,7 +108,6 @@ static NSString * const consumerSecret = @"s5ynGqXzstUZwFPxVyMDkYh197qvHOcVM3kwv
 
 
 - (void)getHomeTimelineWithCompletion:(void(^)(NSArray *tweets, NSError *error))completion {
-    
     
     // Create a GET Request
     [self GET:@"1.1/statuses/home_timeline.json"

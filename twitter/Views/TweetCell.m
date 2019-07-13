@@ -18,16 +18,17 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
-- (IBAction)didTapReply:(id)sender {
+
+- (void) refreshData
+{
+    self.numLikesLabel.text = [NSString stringWithFormat:@"%d", self.tweet.favoriteCount];
+    self.numRetweetsLabel.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
 }
 
 
@@ -67,23 +68,16 @@
             }
         }];
         
-        
     }
     
     [self refreshData];
         
 }
-    
-
-
-
-
 
 
 - (IBAction)didTapLike:(id)sender {
     NSLog(@"Like button was clicked");
-    
-    
+
     if (self.tweet.favorited)
         
     {
@@ -102,12 +96,6 @@
                 NSLog(@"Successfully unfavorited the following Tweet: %@", tweet.text);
             }
         }];
-        
-        
-        
-        
-        
-        
     }
     
     else
@@ -128,27 +116,32 @@
         }];
         
     }
-  
-    
     [self refreshData];
 
-    
 }
 
 
 
-
-
-
-- (void) refreshData
+- (void) configureTweetCell:(Tweet *)tweet
 {
+    NSString *pic = tweet.user.profileImageURL;
+    NSURL *userPicNSURL = [NSURL URLWithString:pic];
+    
+    self.userPicImageView.image = nil;
+    [self.userPicImageView setImageWithURL:userPicNSURL];
+    
+    self.tweet = tweet;
+    self.tweetContentLabel.text = tweet.text;
 
-    self.numLikes.text = [NSString stringWithFormat:@"%d", self.tweet.favoriteCount];
-    self.numRetweets.text = [NSString stringWithFormat:@"%d",self.tweet.retweetCount];
+    self.userHandleLabel.text = [NSString stringWithFormat:@"@%@",tweet.user.screenName];
+    
+    self.tweetDateLabel.text = tweet.timeAgoString;
+    self.usernameLabel.text = tweet.user.name;
+    self.numLikesLabel.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
+    self.numRetweetsLabel.text = [NSString stringWithFormat:@"%d",tweet.retweetCount];
+    self.numRepliesLabel.text = [NSString stringWithFormat:@"%d",tweet.reply_count];
     
 }
-
-
 
 
 @end

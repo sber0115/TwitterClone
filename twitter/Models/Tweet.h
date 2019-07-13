@@ -26,13 +26,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *createdAtString; // Display date
 @property (strong, nonatomic) NSString *timeAgoString; //Display how long it's been since tweet creation
 @property (strong,nonatomic) NSDictionary *tweet;
+
+// For Retweets
+@property (strong, nonatomic) User *retweetedByUser;  // user who retweeted if tweet is retweet
+
 + (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 //had to add this during API for during the API Augmentation
-
-// For Retweets
-@property (strong, nonatomic) User *retweetedByUser;  // user who retweeted if tweet is retweet
 
 @end
 

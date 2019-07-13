@@ -17,10 +17,16 @@
 #import "DetailedView.h"
 
 
+static NSString * const TWEET_CELL_ID = @"TweetCell";
+static NSString * const DETAILED_VIEW_SEGUE = @"Details";
+static NSString * const COMPOSE_VIEW_SEGUE = @"MakeTweet";
+static NSString * const LOGIN_VIEW_ID = @"LoginViewController";
+
+
 
 @interface TimelineViewController () <ComposeViewControllerDelegate,UITableViewDataSource, UITableViewDelegate>
 
-@property (strong,nonatomic) NSMutableArray *tweetArray;
+@property (strong,nonatomic) NSMutableArray <Tweet *> *tweetArray;
 
 
 
@@ -43,13 +49,11 @@
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    
-    
+
     [self fetchTweets];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
-    
-    
+
     [self.refreshControl addTarget:self action:@selector(fetchTweets) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     
@@ -58,15 +62,10 @@
 
 
 - (IBAction)logoutClick:(id)sender {
-    
-    
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:LOGIN_VIEW_ID];
     appDelegate.window.rootViewController = loginViewController;
-    
-    
     [[APIManager shared] logout];
     
 }
@@ -85,36 +84,19 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    
-    
-    if ([segue.identifier isEqualToString:@"Details"]) {
+    if ([segue.identifier isEqualToString:DETAILED_VIEW_SEGUE]) {
         UITableViewCell *tappedCell = sender;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
         Tweet *tweet = self.tweetArray[indexPath.row];
-        
         DetailedView *detailedView = [segue destinationViewController];
-        
         detailedView.tweet = tweet;
-        
     }
-    
-    
-    else if ([segue.identifier isEqualToString:@"MakeTweet"]) {
+    else if ([segue.identifier isEqualToString:COMPOSE_VIEW_SEGUE]) {
         UINavigationController *navigationController = [segue destinationViewController];
         ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
         composeController.delegate = self;
-        
-        
     }
-    
-    
-    
-    
-    
 }
-
-
 
 
 
@@ -133,12 +115,10 @@
             //Step 7: here after successfully retrieving the data we are
             //refreshing the tableview
             ///Step 8: this method also invokes numberOfRows and cellForRowAt
-            
         } else {
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
         }
     }];
-    
     
     [self.refreshControl endRefreshing];
     
@@ -147,57 +127,25 @@
 
 
 - (void)didTweet:(Tweet *)tweet
-
 {
     [self.tweetArray insertObject:tweet atIndex:0];
-    
     [self.tableView reloadData];
-
 }
-
-
-
 
 
 //Step 10: here we are returning a cell with the properties we modified according
 //to stored data
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
-    TweetCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TweetCell" forIndexPath:indexPath];
-    
+    TweetCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TWEET_CELL_ID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     Tweet* tweet = self.tweetArray[indexPath.row];
     
-    NSString *pic = tweet.user.profileImageURL;
-    
-    
-    NSURL *userPicNSURL = [NSURL URLWithString:pic];
-    
-    
-    cell.userPic.image = nil;
-    [cell.userPic setImageWithURL:userPicNSURL];
-    
-    cell.tweet = tweet;
-    cell.tweetContent.text = tweet.text;
-    
-    
-    cell.userHandle.text = @"@";
-    cell.userHandle.text = [cell.userHandle.text stringByAppendingString:tweet.user.screenName];
-    
-    cell.tweetDate.text = tweet.timeAgoString;
-    cell.userName.text = tweet.user.name;
-    cell.numLikes.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
-    cell.numRetweets.text = [NSString stringWithFormat:@"%d",tweet.retweetCount];
-    cell.numReplies.text = [NSString stringWithFormat:@"%d",tweet.reply_count];
-    
+    [cell configureTweetCell:tweet];
     
     return cell;
 
-    
 }
-
-
 
 //Step 8: returning the number of rows we need
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

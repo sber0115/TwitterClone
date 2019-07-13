@@ -18,7 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 
@@ -28,15 +27,13 @@
 
 
 - (IBAction)didTapPost:(id)sender {
-    
     [self composeTweet];
 }
 
 
-
 - (void)composeTweet
 {
-    [[APIManager shared]postStatusWithText:self.tweetTextField.text completion:^(Tweet *tweet, NSError *error) {
+    [[APIManager shared]postStatusWithText:self.tweetTextView.text completion:^(Tweet *tweet, NSError *error) {
         if(error){
             NSLog(@"Error composing Tweet: %@", error.localizedDescription);
         }
@@ -48,18 +45,5 @@
     [self dismissViewControllerAnimated:true completion:nil];
     
 }
-
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

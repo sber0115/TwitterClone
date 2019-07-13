@@ -34,9 +34,6 @@
         self.retweeted = [dictionary[@"retweeted"] boolValue];
         self.reply_count = [dictionary[@"reply_count"] intValue];
         
-        // TODO: initialize user
-        
-        
         // initialize user
         NSDictionary *user = dictionary[@"user"];
         self.user = [[User alloc] initWithDictionary:user];
@@ -55,19 +52,14 @@
         NSDate *timeAgoDate = [NSDate dateWithTimeInterval:0 sinceDate:date];
         
         NSLog(@"Time since tweet creation: %@", timeAgoDate.shortTimeAgoSinceNow);
-        
-        
+    
         // Configure output format
         formatter.dateStyle = NSDateFormatterShortStyle;
         formatter.timeStyle = NSDateFormatterNoStyle;
         // Convert Date to String
         self.createdAtString = [formatter stringFromDate:date];
         self.timeAgoString = timeAgoDate.shortTimeAgoSinceNow;
-        
-        
     }
-
-    
     return self;
 }
 
@@ -80,6 +72,11 @@
     }
     return tweets;
 }
+
+
+
+
+
 
 
 @end
